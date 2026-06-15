@@ -1,0 +1,9 @@
+# Runtime dependencies. The simulator/env stack (everything except sac.py) needs
+# only numpy/scipy/matplotlib; sac.py and the SAC scripts additionally need torch.
+#
+# Verified here against: numpy 2.4.4, scipy 1.17.1, matplotlib 3.10.8.
+# torch is required for the SAC pieces but was not exercised in this environment.
+numpy
+scipy
+matplotlib
+torch
