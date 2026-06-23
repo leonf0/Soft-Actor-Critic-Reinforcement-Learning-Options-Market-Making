@@ -2,6 +2,27 @@
 
 ## Introduction and Motivation
 
+A market maker posts a two-sided quote, offering a price they are willing to buy at (bid) and a price thet are willing to sell at (ask). By doing this they earns
+the spread between the two values but in doing so inherits the book's risk. In the context of options market making, there are many strikes/experies that have seperate order books, but fundamentally. We define the following risk measurements:
+
+**Delta**: The rate of change of the option's price with respect to a $1 change in the price of the underlying asset.
+
+$$\Delta = \frac{\partial V}{\partial S}$$
+
+**Gamma**: The rate of change of Delta with respect to a $1 change in the underlying asset's price. It is the second derivative of the option's value.
+
+$$\Gamma = \frac{\partial \Delta}{\partial S} = \frac{\partial^2 V}{\partial S^2}$$
+
+**Vega**: The rate of change of the option's price with respect to a 1% change in the implied volatility of the underlying asset.
+
+$$\nu = \frac{\partial V}{\partial \sigma}$$
+
+**Vanna**: The rate of change of Delta with respect to a 1% change in implied volatility, mathematically identical to the rate of change of Vega with respect to a $1 change in the underlying price.
+
+$$\text{Vanna} = \frac{\partial \Delta}{\partial \sigma} = \frac{\partial \nu}{\partial S} = \frac{\partial^2 V}{\partial S \, \partial \sigma}$$
+
+Whilst delta is hedgeable by taking positions in the underlying asset, this comes with transaction costs; on the other hand vega/gamma/vanna the book accumulates under stochastic volatility has method for offsetting risk, it can only be managed by how you quote (resevation price skew, and spread around this price).
+
 ## Continuous Space Partially Observable Markov Decision Process
 
 We define a countiuous space, partially observable, Markov Decision Process as the tuple POMDP 7-tuple: ($\mathcal{S}, \mathcal{O}, \mathcal{A}, \mathcal{P}, r, \gamma, \mathbb{S}$), where $\mathcal{S}$ is the set of states, $\mathcal{O}$ is the set of observations, $\mathcal{A}$ is the set of actions, $\mathcal{P} \colon \mathcal{S} \times \mathcal{A} \times \mathcal{S} \to [0,1]$ is the transition kernel, $(s, a, s') \mapsto P(s' \mid s, a)$, with $\sum_{s' \in \mathcal{S}} P(s' \mid s, a) = 1$, $r \colon \mathcal{S} \times \mathcal{A} \to \mathbb{R}$ is the reward function, $(s, a) \mapsto r(s, a)$, $\gamma \in [0,1)$ is the discount factor, $\mathbb{S} \in \Delta(\mathcal{S})$ is the initial state distribution, $\mathbb{S}(s) = \Pr(s_0 = s)$.
