@@ -3,7 +3,7 @@
 ## Introduction and Motivation
 
 A market maker posts a two-sided quote, offering a price they are willing to buy at (bid) and a price thet are willing to sell at (ask). By doing this they earns
-the spread between the two values but in doing so inherits the book's risk. In the context of options market making, there are many strikes/experies that have seperate order books, but fundamentally. We define the following risk measurements:
+the spread between the two values but in doing so inherits the book's risk. We define the following risk measurements:
 
 **Delta**: The rate of change of the option's price with respect to a $1 change in the price of the underlying asset.
 
@@ -22,6 +22,10 @@ $$\nu = \frac{\partial V}{\partial \sigma}$$
 $$\text{Vanna} = \frac{\partial \Delta}{\partial \sigma} = \frac{\partial \nu}{\partial S} = \frac{\partial^2 V}{\partial S \, \partial \sigma}$$
 
 Whilst delta is hedgeable by taking positions in the underlying asset, this comes with transaction costs; on the other hand vega/gamma/vanna the book accumulates under stochastic volatility has method for offsetting risk, it can only be managed by how you quote (resevation price skew, and spread around this price).
+
+The variance process that drives this risk is unobservable, meaning the market-maker acts on noisy proxies (such as order flow, IV estimates, realised-vol EWMAs). Another problem is adverse selection, Clustered, possibly informed flow can pick off one side of the quotes, so optimal quoting must take into account order flow and intensity, not just inventory. Many of the instruments an options market maker quotes share one underlying and overlapping vol exposure, this means quotes aren't separable, and a fill anywhere in any of these instruments will effect book-level Greeks.
+
+Classic models like Avellaneda–Stoikov assume independent or single assets, known parametric dynamics, linear/quadratic risk, an observable state, and dont take microstructure into account. A reinforcement learning approach however learns a policy directly from simulator interaction with no closed-form value function, this allows it to develop an understanding of the complexity that breaks classical analytical methods.
 
 ## Continuous Space Partially Observable Markov Decision Process
 
