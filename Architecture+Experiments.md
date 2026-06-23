@@ -27,7 +27,7 @@ The variance process that drives this risk is unobservable, meaning the market-m
 
 Classic models like Avellaneda–Stoikov assume independent or single assets, known parametric dynamics, linear/quadratic risk, an observable state, and dont take microstructure into account. A reinforcement learning approach however learns a policy directly from simulator interaction with no closed-form value function, this allows it to develop an understanding of the complexity that breaks classical analytical methods.
 
-## Continuous Space Partially Observable Markov Decision Process
+## Continuous Space Partially Observable Markov Decision Process (POMDP)
 
 We define a countiuous space, partially observable, Markov Decision Process as the tuple POMDP 7-tuple: ($\mathcal{S}, \mathcal{O}, \mathcal{A}, \mathcal{P}, r, \gamma, \mathbb{S}$), where $\mathcal{S}$ is the set of states, $\mathcal{O}$ is the set of observations, $\mathcal{A}$ is the set of actions, $\mathcal{P} \colon \mathcal{S} \times \mathcal{A} \times \mathcal{S} \to [0,1]$ is the transition kernel, $(s, a, s') \mapsto P(s' \mid s, a)$, with $\sum_{s' \in \mathcal{S}} P(s' \mid s, a) = 1$, $r \colon \mathcal{S} \times \mathcal{A} \to \mathbb{R}$ is the reward function, $(s, a) \mapsto r(s, a)$, $\gamma \in [0,1)$ is the discount factor, $\mathbb{S} \in \Delta(\mathcal{S})$ is the initial state distribution, $\mathbb{S}(s) = \Pr(s_0 = s)$.
 
@@ -41,7 +41,17 @@ Another relavent term to define is the Q-function, which is defined as $Q^{\pi}(
 
 ## Introduction to Actor Critic Algorithms
 
+Reinforcement Learning (RL) methods that are "actor-only" work with a paramterised family of policies. The gradient of the agents perfomance with respect to these parameters is then used to update the parameters. This comes with the drawbacks that gradient estimators usually have extremely large variance (especially in stochastic environments), and new gradients are computed independently of past estimates (so there is no consolidation of previous information).
+
+RL methods that are "critic-only" rely exclusively on approximating a value function, and learn a solution that maximises the Q-function. However critic-only methods collapse when actions are continuous, finding argmax across an infinite number of continuous actions is computationally impossible; additionally there isn't a reliable guarantee of near-optimality of the resulting policy.
+
+Actor critic RL methods aim to capture the advantages of both of these, whilst minimising the drawbacks. The critic uses an approximation architecture to learn a value function, and this value function is used to update the actors policies.
+
 ## Asymmetric Actor Critic
+
+In a POMDP, aquiring the full state of the environment is infeasible in practice. When training an RL agent we could infer the full state using predictors, however this is difficult and can be expensive/inaccurate; another option is to train solely on partial observations, however this may not be powerful enough to learn complex behaviours and variable interaction in high-dimensional input spaces.
+
+In a simulator however, we have access to the full state of the agents environment. Asymmetric Actor Critic aims to exploit this fact in order to train better policies that only take inpout as partial observations, and do this more efficiently. This is achieved by having the actor learn a policy that only relies on the partial observations, whilst the critic has access to the full state allowing it to learn the value function much more accurately and quicker - making better updates for the actor possible.
 
 ## Soft Actor Critic Algorithm
 
