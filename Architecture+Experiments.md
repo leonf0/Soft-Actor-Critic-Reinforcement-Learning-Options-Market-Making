@@ -55,7 +55,57 @@ In a simulator however, we have access to the full state of the agents environme
 
 ## Soft Actor Critic Algorithm
 
+Model-free deep RL learns a policy and/or value function directly from interaction instead of leaning environment-agent interaction dynamics, however problems arise due to the fact of high sample complexity and brittle convergence properties - this typically necessitates meticulous hyperperameter tuning.
+
+The soft actor critic algorithm is an off-policy, maximum entropy, actor crtic algorithm based on maximising expected return whilst also maximising entropy (ie maximise in the reward function whilst acting as randomly as possible.
+
+Standard RL maximises the function:
+
+$$J(\pi) = \sum_{t} \mathbb{E}_{(s_t, a_t) \sim \rho_\pi}\left[ r(s_t, a_t) \right]$$
+
+Soft Actor Critic augments this by adding an entropy term:
+
+$$J(\pi) = \sum_{t=0}^{T} \mathbb{E}_{(s_t, a_t) \sim \rho_\pi}\left[ r(s_t, a_t) + \alpha \mathcal{H}\left(\pi(\cdot \mid s_t)\right) \right]$$
+ 
+$$\mathcal{H}\left(\pi(\cdot \mid s_t)\right) = \mathbb{E}_{a_t \sim \pi(\cdot \mid s_t)}\left[ -\log \pi(a_t \mid s_t) \right] = -\int_{\mathcal{A}} \pi(a \mid s_t) \log \pi(a \mid s_t)\, da$$
+
+Where $\alpha$ is the temperature that affects how stochastic our policy aims to be.
+
+In each policy improvement step, we update the policy according to
+
+$$\pi_{\text{new}} = \arg\min_{\pi' \in \Pi} \; D_{\mathrm{KL}}\left( \pi'(\cdot \mid s_t) \Bigg\| \frac{\exp\left(Q^{\pi_{\text{old}}}(s_t, \cdot)\right)}{Z^{\pi_{\text{old}}}(s_t)} \right)$$
+
+Where $\Pi$ is some set of policies (in our case the Guassians), $Q^{\pi_{\text{old}}}$ is the soft Q-function of the old policy and 
+
+$$Z^{\pi_{\text{old}}}(s_t) = \int_{\mathcal{A}} \exp\left(Q^{\pi_{\text{old}}}(s_t, a)\right) \, da$$
+
+The exp serves as a "weighted preference": it essentially ranks options so better scores get exponentially more weight without ever dropping anyone to zero.
+
 ## Set Attention Encoder
+
+The attention mechanism takes in 3 vectors as input: a query vector Q, a key vector K, and a value vector V, and computes:
+
+$$Attention(Q,K,V) = softmax(QK^{T})V$$
+
+Multihead Attention projects Q,K,V onto h different vectors, of dimensions $d_{q}^{M}$, $d_{q}^{M}$, $d_{v}^{M}$, and applies an attention function to each of these h projections. The output is a linear combination of the concatenation of all the attention outputs.
+
+$$Multihead(Q,K,V) = concat(O_{1}, ... , O_{h})W^{O})$$
+$$O_{j} = Attention(QW_{j}^{Q}, KW_{j}^{K}, VW_{j}^{V})$$
+
+Where $W_{j}^{Q}$, $W_{j}^{K}$ $\in \mathbb{R}^{d_{q} \times d_{q}^{M}}$, $W_{j}^{V}$ $\in \mathbb{R}^{d_{v} \times d_{v}^{M}}$, $W^{O}$ $\in  \mathbb{R}^{hd_{v}^{M} \times d}$ are learned parameters.
+ 
+A multihead attention block takes in two sets as input and the transformation is defined by
+
+$$MAB(X,Y) = LayerNorm(H + rFF(H))$$
+$$H = LayerNorm(X + MultiHead(X,Y,Y))$$
+
+And the set attention block is defined by 
+
+$$SAB(X) = MAB(X,X)$$
+
+The encoder transformation that we use is
+
+$$Encoder(X) = SAB(SAB(X))$$
 
 ## Baseline, Training and Evaluation
 
