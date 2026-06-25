@@ -116,15 +116,15 @@ $$Encoder(X) = SAB(SAB(X))$$
 </p>
 
 <p align="center">
-  <img src="diagrams/.png" alt="" width="80%"/>
+  <img src="diagrams/hedgeable_risk.png" alt="" width="80%"/>
 </p>
 
 <p align="center">
-  <img src="diagrams/.png" alt="" width="80%"/>
+  <img src="diagrams/unhedgeable_risk.png" alt="" width="80%"/>
 </p>
 
 <p align="center">
-  <img src="diagrams/.png" alt="" width="80%"/>
+  <img src="diagrams/pnl_decomposition.png" alt="" width="80%"/>
 </p>
 
 <p align="center">
