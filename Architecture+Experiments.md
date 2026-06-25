@@ -111,5 +111,31 @@ $$Encoder(X) = SAB(SAB(X))$$
 
 ## Experiment Results
 
+<p align="center">
+  <img src="diagrams/terminal_pnl.png" alt="" width="80%"/>
+</p>
+
+<p align="center">
+  <img src="diagrams/.png" alt="" width="80%"/>
+</p>
+
+<p align="center">
+  <img src="diagrams/.png" alt="" width="80%"/>
+</p>
+
+<p align="center">
+  <img src="diagrams/.png" alt="" width="80%"/>
+</p>
+
+<p align="center">
+  <img src="diagrams/sac_cumulative_fills.png" alt="" width="80%"/>
+</p>
+
+<p align="center">
+  <img src="diagrams/as_cumulative_fills.png" alt="" width="80%"/>
+</p>
+
+
+
 ## Discussion
 
